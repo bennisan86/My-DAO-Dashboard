@@ -2,7 +2,7 @@ import actionCreatorFactory from "typescript-fsa";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import asyncFactory from "typescript-fsa-redux-thunk";
 import { Provider } from "web3/providers";
-import { uniq } from "../Components/DaoListComponent/DaoListLoader";
+import { uniq } from "../components/DaoListComponent/DaoListLoader";
 import * as services from "../backbone/services";
 import { votesService } from "../backbone/services";
 import { VoteProposal } from "../backbone/votes.service";

@@ -4,13 +4,13 @@ import { Provider } from "react-redux";
 import { Redirect, Route } from "react-router";
 import "./assets/styles/app.css";
 import { store } from "./redux/store";
-import AccountComponent from "./Components/AccountComponent/AccountComponent";
-import DaoListLoader from "./Components/DaoListComponent/DaoListLoader";
-import AppHeader from "./Components/Layout/AppHeader";
-import ProposalLoader from "./Components/ProposalLoader";
-import Settings from "./Components/Settings/Settings";
-import DAO from "./Pages/DAO";
-import Dashboard from "./Pages/Dashboard";
+import AccountComponent from "./components/AccountComponent/AccountComponent";
+import DaoListLoader from "./components/DaoListComponent/DaoListLoader";
+import AppHeader from "./components/Layout/AppHeader";
+import ProposalLoader from "./components/ProposalLoader";
+import Settings from "./components/Settings/Settings";
+import DAO from "./pages/DAO";
+import Dashboard from "./pages/Dashboard";
 
 const { Header, Content, Footer } = Layout;
 
