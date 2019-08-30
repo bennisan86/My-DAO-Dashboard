@@ -1,8 +1,11 @@
 import actionCreatorFactory from "typescript-fsa";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import asyncFactory from "typescript-fsa-redux-thunk";
-import * as services from "./services";
-import { AccountState } from "./State";
+import * as services from "../backbone/services";
+
+export interface AccountState {
+  address?: string;
+}
 
 const action = actionCreatorFactory("ACCOUNT");
 const asyncAction = asyncFactory<AccountState>(action);

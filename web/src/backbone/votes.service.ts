@@ -4,7 +4,8 @@ import Web3 from "web3";
 import aragonKernelABI from "../abis/aragon-kernel.abi.json";
 import aragonVotingABI from "../abis/aragon-voting.abi.json";
 import { AccountService } from "./account.service";
-import { DaoInstanceState, DaoKind } from "./State";
+import {DaoInstanceState} from "../model/DaoInstanceState";
+import {DaoKind} from "../model/DaoKind";
 
 export enum TransactionKind {
   MINTING = "MINTING",

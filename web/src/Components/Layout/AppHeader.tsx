@@ -2,7 +2,7 @@ import { Avatar, Col, Row, Tooltip } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { State } from "../../backbone/State";
+import {State} from "../../redux/store";
 
 interface Props {
   account: string;

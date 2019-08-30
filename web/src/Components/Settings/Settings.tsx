@@ -1,9 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
-import {openBox} from "../../backbone/daos";
+import {openBox} from "../../redux/daos.redux";
 import * as services from '../../backbone/services'
-import {State} from "../../backbone/State";
 import {AddressesForm} from "./AddressesForm";
+import {State} from "../../redux/store";
 
 const NAMESPACE = 'my-dao-dashboard'
 const ADDRESS_KEY = 'watched-addresses'

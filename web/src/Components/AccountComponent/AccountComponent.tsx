@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
-import * as account from "../../backbone/account";
-import { State } from "../../backbone/State";
+import * as account from "../../redux/account.redux";
+import {State} from "../../redux/store";
 
 interface StateProps {
   account: string | undefined;

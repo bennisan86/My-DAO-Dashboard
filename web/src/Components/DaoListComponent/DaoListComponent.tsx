@@ -3,9 +3,10 @@ import Meta from "antd/lib/card/Meta";
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { DaoInstanceState, State } from "../../backbone/State";
 import DaoLink from "../DaoLink";
 import DaoTag from "../DaoTag";
+import {DaoInstanceState} from "../../model/DaoInstanceState";
+import {State} from "../../redux/store";
 
 interface StateProps {
   daos: DaoInstanceState[];
@@ -39,7 +40,7 @@ export class DaoListComponent extends React.Component<StateProps> {
                         <p><DaoLink type={item.kind} address={item.address} /></p>
                         <div style={{ maxWidth: "60%"}}>
                           <Statistic title="Balance" value={item.usdBalance} precision={2} prefix={'$'} />
-                          
+
                           <div className="ant-statistic-title">Voting power <small>({item.shareBalance} of {item.totalSupply})</small></div>
                           <Progress percent={
                               Math.round((item.shareBalance / item.totalSupply) * 100)} status="active" />

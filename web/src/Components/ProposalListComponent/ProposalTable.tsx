@@ -1,11 +1,11 @@
 import { Badge, Table } from "antd";
 import Column from "antd/lib/table/Column";
 import React, { Component } from "react";
-import { DaoInstanceState } from "../../backbone/State";
 import { VoteCount } from "../../backbone/votes.service";
 import DaoIconLink from "../DaoIconLink";
 import DaoTag from "../DaoTag";
 import { IProposalColumn } from "../IProposalColumn";
+import {DaoInstanceState} from "../../model/DaoInstanceState";
 
 interface IProps {
   open: boolean;

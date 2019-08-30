@@ -1,10 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
-import {State} from "../backbone/State";
 import {VoteProposal} from "../backbone/votes.service";
 import {DummyProposalListComponent} from "./DummyProposalListComponent";
 import {distributeProposals} from "./IProposalColumn";
 import Loader from "./Layout/Loader/Loader";
+import {State} from "../redux/store";
 
 interface StateProps {
   proposals: VoteProposal[] | undefined

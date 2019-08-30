@@ -3,10 +3,16 @@ import { reducerWithInitialState } from "typescript-fsa-reducers";
 import asyncFactory from "typescript-fsa-redux-thunk";
 import { Provider } from "web3/providers";
 import { uniq } from "../Components/DaoListComponent/DaoListLoader";
-import * as services from "./services";
-import { votesService } from "./services";
-import { DaoInstanceState, DaosState } from "./State";
-import { VoteProposal } from "./votes.service";
+import * as services from "../backbone/services";
+import { votesService } from "../backbone/services";
+import { VoteProposal } from "../backbone/votes.service";
+import {DaoInstanceState} from "../model/DaoInstanceState";
+
+export interface DaosState {
+  daos: DaoInstanceState[] | undefined;
+  dao: DaoInstanceState | undefined;
+  proposals: VoteProposal[] | undefined;
+}
 
 // tslint:disable-next-line: no-var-requires
 const Box = require("3box");

@@ -1,10 +1,11 @@
 import { Progress, Statistic } from "antd";
 import React from "react";
 import { connect } from "react-redux";
-import { DaoInstanceState, State } from "../../backbone/State";
 import DaoLink from "../DaoLink";
 import DaoTag from "../DaoTag";
 import ProposalListComponent from "../ProposalListComponent/ProposalListComponent";
+import {DaoInstanceState} from "../../model/DaoInstanceState";
+import {State} from "../../redux/store";
 
 interface StateProps {
   dao: DaoInstanceState;

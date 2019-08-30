@@ -3,7 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { Redirect, Route } from "react-router";
 import "./assets/styles/app.css";
-import { store } from "./backbone/store";
+import { store } from "./redux/store";
 import AccountComponent from "./Components/AccountComponent/AccountComponent";
 import DaoListLoader from "./Components/DaoListComponent/DaoListLoader";
 import AppHeader from "./Components/Layout/AppHeader";

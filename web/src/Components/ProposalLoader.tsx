@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import {ThunkDispatch} from "redux-thunk";
-import * as daos from "../backbone/daos";
+import * as daos from "../redux/daos.redux";
 
 interface DispatchProps {
     loadProposals: () => void

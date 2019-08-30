@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
-import * as daos from "../../backbone/daos";
-import { State } from "../../backbone/State";
+import * as daos from "../../redux/daos.redux";
 import Loader from "../Layout/Loader/Loader";
+import {State} from "../../redux/store";
 
 interface StateProps {
   isLoading: boolean;

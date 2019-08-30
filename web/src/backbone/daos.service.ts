@@ -10,7 +10,8 @@ import daolist from "../data/daolist.json";
 import knownMolochList from "../data/moloch-daos.json";
 import { AccountService } from "./account.service";
 import { BalanceService } from "./balance.service";
-import { DaoInstanceState, DaoKind } from "./State";
+import {DaoInstanceState} from "../model/DaoInstanceState";
+import {DaoKind} from "../model/DaoKind";
 
 function uniq<A>(array: A[]): A[] {
   return array.filter((v, i) => {
