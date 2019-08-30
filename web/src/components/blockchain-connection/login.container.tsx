@@ -2,25 +2,20 @@ import React from 'react';
 import { State } from '../../redux/store';
 import { connect } from 'react-redux';
 import * as account from '../../redux/account.redux';
-import { Mutex } from 'await-semaphore';
-import { Provider } from 'web3/providers';
-import { providers } from 'ethers';
-import { AsyncSendable } from 'ethers/providers';
 import { Dispatch } from 'redux';
-
-interface PassedProps {
-  provider: Provider;
-}
+import Loader from '../Layout/Loader/Loader';
+import { Services } from '../../services/services';
+import { ServicesContext } from '../../contexts/services.context';
 
 interface StateProps {
   isLoggedIn: boolean;
 }
 
 interface DispatchProps {
-  setAddress: (address: string) => void;
+  setAccount: (address: string) => void;
 }
 
-type Props = StateProps & DispatchProps & PassedProps;
+type Props = StateProps & DispatchProps;
 
 interface LoginContainerState {
   error: string | undefined,
@@ -28,13 +23,12 @@ interface LoginContainerState {
 }
 
 export class LoginContainer extends React.Component<Props, LoginContainerState> {
-  private mutex = new Mutex();
   state = {
     error: undefined,
     inProgress: false
   };
 
-  async handleClick() {
+  async handleClick(services: Services) {
     if (!this.state.inProgress) {
       try {
         this.setState({
@@ -48,11 +42,9 @@ export class LoginContainer extends React.Component<Props, LoginContainerState> 
             })
           }
         }, 10000)
-        await (this.props.provider as any).enable();
-        const provider = new providers.Web3Provider(this.props.provider as AsyncSendable);
-        const signer = await provider.getSigner();
-        const address = await signer.getAddress();
-        this.props.setAddress(address);
+        await services.enable()
+        const account = await services.account()
+        this.props.setAccount(account);
       } catch (e) {
         this.setState({
           inProgress: false,
@@ -74,20 +66,24 @@ export class LoginContainer extends React.Component<Props, LoginContainerState> 
     if (this.props.isLoggedIn) {
       return this.props.children
     } else if (this.state.inProgress) {
-      return <>Waiting for the permission...</>
+      return <Loader/>
     } else {
       return (
-        <>
-          <p>You are not logged in</p>
-          {this.renderError()}
-          <button onClick={this.handleClick.bind(this)}>Connect</button>
-        </>
+        <ServicesContext.Consumer>
+          {services => {
+            return <>
+              <p>You are not logged in</p>
+              {this.renderError()}
+              <button onClick={this.handleClick.bind(this, services)}>Connect</button>
+            </>
+          }}
+        </ServicesContext.Consumer>
       );
     }
   }
 }
 
-function stateToProps(state: State, props: PassedProps): StateProps {
+function stateToProps(state: State): StateProps {
   return {
     isLoggedIn: !!state.account.address,
   };
@@ -95,7 +91,7 @@ function stateToProps(state: State, props: PassedProps): StateProps {
 
 function dispatchToProps(dispatch: Dispatch): DispatchProps {
   return {
-    setAddress: address => {
+    setAccount: address => {
       dispatch(account.setAddress(address));
     },
   };

@@ -9,7 +9,6 @@ import Settings from './components/Settings/Settings';
 import DAO from './pages/DAO';
 import Dashboard from './pages/Dashboard';
 import { MainContainer } from './components/main.container';
-import LoginContainer from './components/login/login.container';
 
 const { Header, Content, Footer } = Layout;
 

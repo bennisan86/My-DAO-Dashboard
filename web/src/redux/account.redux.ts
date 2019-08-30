@@ -2,7 +2,6 @@ import actionCreatorFactory from 'typescript-fsa';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import asyncFactory from 'typescript-fsa-redux-thunk';
 import * as services from '../backbone/services';
-import ethers from 'ethers';
 
 export interface AccountState {
   address: string | undefined;
