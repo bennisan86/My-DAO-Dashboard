@@ -5,13 +5,11 @@ import { Provider } from 'react-redux';
 import { MetamaskContainer } from './metamask/metamask.container';
 
 export class MainContainer extends React.PureComponent {
-  render () {
+  render() {
     return (
       <BrowserRouter>
         <Provider store={store}>
-          <MetamaskContainer>
-            {this.props.children}
-          </MetamaskContainer>
+          <MetamaskContainer>{this.props.children}</MetamaskContainer>
         </Provider>
       </BrowserRouter>
     );
