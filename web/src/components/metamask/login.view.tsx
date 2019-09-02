@@ -1,12 +1,8 @@
 import React from 'react'
 
-export class LoginView extends React.PureComponent<{onLogin: () => void, isProgress: boolean}> {
+export class LoginView extends React.PureComponent<{onLogin: () => void}> {
   renderButton () {
-    if (this.props.isProgress) {
-      return <button>Loading...</button>
-    } else {
-      return <button onClick={this.props.onLogin}>Connect</button>
-    }
+    return <button onClick={this.props.onLogin}>Connect</button>
   }
 
   render () {

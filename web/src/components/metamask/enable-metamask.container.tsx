@@ -1,46 +1,35 @@
-import React from 'react'
+import React from 'react';
 import { LoginView } from './login.view';
 
 function isEnabled(provider: any) {
   return provider && provider.enable ? provider.selectedAddress : !!provider;
 }
 
-export class EnableMetamaskContainer extends React.Component<{availableProvider: any}> {
+export class EnableMetamaskContainer extends React.Component<{ availableProvider: any }> {
   state = {
     isEnabled: isEnabled(this.props.availableProvider),
-    isProgress: false
   };
 
-  onLogin () {
-    if (!this.state.isProgress) {
-      this.setState({
-        isProgress: true
-      })
-      if (this.props.availableProvider.enable) {
-        this.props.availableProvider.enable().then(() => {
-          this.setState({
-            isEnabled: true,
-            isProgress: false
-          })
-        }).catch(() => {
-          this.setState({
-            isEnabled: false,
-            isProgress: true
-          })
-        })
-      } else {
+  async onLogin() {
+    if (this.props.availableProvider.enable) {
+      try {
+        await this.props.availableProvider.enable();
         this.setState({
-          isProgress: false
-        })
+          isEnabled: true,
+        });
+      } catch (e) {
+        this.setState({
+          isEnabled: false,
+        });
       }
     }
   }
 
-  render () {
+  render() {
     if (this.state.isEnabled) {
-      return this.props.children
+      return this.props.children;
     } else {
-      return <LoginView onLogin={this.onLogin.bind(this)} isProgress={this.state.isProgress} />
+      return <LoginView onLogin={this.onLogin.bind(this)} />;
     }
   }
 }
