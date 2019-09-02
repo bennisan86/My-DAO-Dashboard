@@ -1,26 +1,29 @@
 import React from 'react';
 import { LoginView } from './login.view';
+import { ProgressKind, WithProgressProps } from './withProgress.hoc';
 
-function isEnabled(provider: any) {
-  return provider && provider.enable ? provider.selectedAddress : !!provider;
+interface Props {
+  availableProvider: any;
+  isEnabled: boolean;
 }
 
-export class EnableMetamaskContainer extends React.Component<{ availableProvider: any }> {
+export class EnableMetamaskContainer extends React.Component<Props & WithProgressProps> {
   state = {
-    isEnabled: isEnabled(this.props.availableProvider),
+    isEnabled: this.props.isEnabled
   };
 
   async onLogin() {
+    this.props.startProgress();
     if (this.props.availableProvider.enable) {
       try {
         await this.props.availableProvider.enable();
+        this.props.stopProgress();
         this.setState({
           isEnabled: true,
         });
       } catch (e) {
-        this.setState({
-          isEnabled: false,
-        });
+        console.error(e);
+        this.props.stopProgress('Something went wrong');
       }
     }
   }
@@ -29,7 +32,14 @@ export class EnableMetamaskContainer extends React.Component<{ availableProvider
     if (this.state.isEnabled) {
       return this.props.children;
     } else {
-      return <LoginView onLogin={this.onLogin.bind(this)} />;
+      switch (this.props.progress.kind) {
+        case ProgressKind.STOPPED:
+          return <LoginView onLogin={this.onLogin.bind(this)} isProgress={false} error={undefined} />;
+        case ProgressKind.RUNNING:
+          return <LoginView onLogin={this.onLogin.bind(this)} isProgress={true} error={undefined} />;
+        case ProgressKind.FAILED:
+          return <LoginView onLogin={this.onLogin.bind(this)} isProgress={false} error={this.props.progress.error} />;
+      }
     }
   }
 }
