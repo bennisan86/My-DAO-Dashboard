@@ -1,20 +1,20 @@
 import { ProgressKind, useProgress } from './use-progress';
 import { LoginView } from './login.view';
 import React from 'react';
-import { enableProvider } from './helpers';
+import { MetamaskProvider } from './metamask-provider';
 
 interface Props {
   setEnabled: (enabled: boolean) => void;
-  availableProvider: any;
+  provider: MetamaskProvider
 }
 
-export const LoginContainer: React.FC<Props> = props => {
+export const LoginComponent: React.FC<Props> = props => {
   const progress = useProgress(false);
 
   const onLogin = async () => {
     progress.start();
     try {
-      await enableProvider(props.availableProvider);
+      await props.provider.enable()
       props.setEnabled(true);
     } catch (e) {
       progress.stop(e);

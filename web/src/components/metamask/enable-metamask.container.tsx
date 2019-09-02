@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { isEnabled } from './helpers';
-import { LoginContainer } from './login.container';
+import { LoginComponent } from './login.component';
+import { MetamaskProvider } from './metamask-provider';
 
 interface Props {
-  availableProvider: any;
+  provider: MetamaskProvider;
 }
 
 export const EnableMetamaskContainer: React.FunctionComponent<Props> = props => {
-  const [enabled, setEnabled] = useState(isEnabled(props.availableProvider));
+  const [enabled, setEnabled] = useState(props.provider.isEnabled());
 
   if (enabled) {
     return <>props.children</>;
   } else {
-    return <LoginContainer setEnabled={setEnabled} availableProvider={props.availableProvider} />;
+    return <LoginComponent setEnabled={setEnabled} provider={props.provider} />;
   }
 };
