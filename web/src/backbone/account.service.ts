@@ -5,7 +5,7 @@ export class AccountService {
     if ((window as any).web3) {
       return new Web3((window as any).web3.currentProvider);
     } else {
-      console.log("Web3 not detected. Please blockchain-connection first");
+      console.log("Web3 not detected. Please metamask_0 first");
       return new Web3();
     }
   }

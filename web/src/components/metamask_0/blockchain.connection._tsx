@@ -1,5 +1,5 @@
 import React from 'react';
-import CanNotBlockchainComponent from './can-not-blockchain.component';
+import CanNotBlockchainView from './can-not-blockchain.view';
 import LoginContainer from './login.container';
 
 interface State {
@@ -52,7 +52,7 @@ export class BlockchainConnection extends React.PureComponent<{}, State> {
         return <LoginContainer onLogin={this.handleLogin.bind(this)} />;
       }
     } else {
-      return <CanNotBlockchainComponent />;
+      return <CanNotBlockchainView />;
     }
   }
 }

@@ -1,0 +1,35 @@
+import React from 'react';
+import { WithLoaderProps } from './with-loader.hoc';
+
+interface Props extends WithLoaderProps {
+  provider: any
+}
+
+interface State {
+  isEnabled: boolean;
+  error: string | undefined;
+}
+
+export default class LoginContainer extends React.PureComponent<Props, State> {
+  state = {
+    isEnabled: false,
+    error: undefined,
+  };
+
+  async handleClick() {
+  }
+
+  render() {
+    if (this.state.isEnabled) {
+      return this.props.children
+    } else {
+      return (
+        <>
+          <p>You are not logged in</p>
+          {this.state.error}
+          <button onClick={this.handleClick.bind(this)}>Connect</button>
+        </>
+      );
+    }
+  }
+}

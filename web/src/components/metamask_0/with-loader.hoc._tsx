@@ -1,0 +1,43 @@
+import React from 'react';
+import Loader from '../Layout/Loader/Loader';
+
+export interface WithLoaderProps {
+  isLoading: boolean
+  startLoading: () => void;
+  stopLoading: () => void;
+}
+
+export function withLoader<A extends WithLoaderProps>(WrappedComponent: React.ComponentType<A>, isLoading: boolean = true) {
+  return class extends React.Component {
+    state = {
+      isLoading: isLoading,
+    };
+
+    startLoading() {
+      this.setState({
+        isLoading: true,
+      });
+    }
+
+    stopLoading() {
+      this.setState({
+        isLoading: false,
+      });
+    }
+
+    render() {
+      if (this.state.isLoading) {
+        return <Loader />;
+      } else {
+        return (
+          <WrappedComponent
+            {...this.props}
+            isLoading={this.state.isLoading}
+            startLoading={this.startLoading.bind(this)}
+            stopLoading={this.stopLoading.bind(this)}
+          />
+        );
+      }
+    }
+  };
+}

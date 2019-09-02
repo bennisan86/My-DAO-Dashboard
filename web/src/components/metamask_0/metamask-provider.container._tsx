@@ -1,0 +1,18 @@
+import React from 'react';
+import CanNotBlockchainView from './can-not-blockchain.view._tsx';
+
+export function availableProvider() {
+  const w = window as any;
+  return w.ethereum || (w.web3 && w.web3.currentProvider);
+}
+
+export class MetamaskProviderContainer extends React.Component {
+  render() {
+    const provider = availableProvider()
+    if (provider) {
+      return 'ava'//<loginContainer provider={provider}>{this.props.children}</loginContainer>;
+    } else {
+      return <CanNotBlockchainView />;
+    }
+  }
+}
