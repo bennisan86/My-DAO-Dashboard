@@ -34,7 +34,7 @@ export function useProgress(initialProgress?: boolean) {
     },
     stop: (reason?: Error) => {
       if (reason) {
-        console.error(reason)
+        console.error(reason);
         setProgress({
           kind: ProgressKind.FAILED,
           error: reason.message,

@@ -1,5 +1,3 @@
-import { ethers } from 'ethers';
-
 export function availableProvider(): any {
   const w = window as any;
   return w.ethereum || (w.web3 && w.web3.currentProvider);
@@ -11,7 +9,6 @@ export function isEnabled(provider: any): boolean {
 
 export async function enableProvider(provider: any): Promise<void> {
   if (provider && provider.enable) {
-    await provider.enable()
+    await provider.enable();
   }
-  // return new ethers.providers.Web3Provider(provider)
 }
