@@ -2,8 +2,7 @@ import React from 'react';
 import Loader from '../Layout/Loader/Loader';
 
 interface Props {
-  availableProvider: any;
-  onEnabled: () => void;
+  onLogin: () => Promise<void>
 }
 
 interface State {
@@ -19,19 +18,28 @@ export default class LoginContainer extends React.PureComponent<Props, State> {
 
   async handleClick() {
     if (!this.state.isProgress) {
-      if (this.props.availableProvider && this.props.availableProvider.enable) {
+      try {
         this.setState({ isProgress: true });
-        try {
-          await this.props.availableProvider.enable();
-          this.setState({ isProgress: false });
-          this.props.onEnabled();
-        } catch (e) {
-          this.setState({
-            isProgress: false,
-            error: 'Connection disabled. Please, try again',
-          });
-        }
+        await this.props.onLogin()
+      } catch (e) {
+        this.setState({
+          isProgress: false,
+          error: e.message,
+        });
       }
+      // if (this.props.availableProvider && this.props.availableProvider.enable) {
+      //   this.setState({ isProgress: true });
+      //   try {
+      //     await this.props.availableProvider.enable();
+      //     this.setState({ isProgress: false });
+      //     this.props.onEnabled();
+      //   } catch (e) {
+      //     this.setState({
+      //       isProgress: false,
+      //       error: 'Connection disabled. Please, try again',
+      //     });
+      //   }
+      // }
     }
   }
 

@@ -7,33 +7,49 @@ interface State {
   isConnected: boolean;
 }
 
-export function nextState(): State {
+export function availableProvider() {
   const w = window as any;
-  const provider = w.ethereum || (w.web3 && w.web3.currentProvider);
-  const isConnected = provider && provider.enable ? provider.selectedAddress : !!provider;
-  return {
-    availableProvider: provider,
-    isConnected: isConnected,
-  };
+  return w.ethereum || (w.web3 && w.web3.currentProvider);
+}
+
+export function isConnected() {
+  const provider = availableProvider();
+  return provider && provider.enable ? provider.selectedAddress : !!provider;
+}
+
+export async function enable(): Promise<void> {
+  const provider = availableProvider()
+  if (provider && provider.enable) {
+    return provider.enable()
+  } else if (provider) {
+
+  }
 }
 
 export class BlockchainConnection extends React.PureComponent<{}, State> {
-  state = nextState();
+  state = {
+    availableProvider: availableProvider(),
+    isConnected: isConnected(),
+  };
 
-  checkConnected() {
-    const next = nextState()
-    return this.setState(next);
+  async handleLogin(): Promise<void> {
+    await this.state.availableProvider.enable()
+    if (isConnected()) {
+      this.setState({
+        isConnected: true
+      })
+    }
   }
 
   render() {
     if (this.state.availableProvider) {
       if (this.state.isConnected) {
-        return 'foo'
+        return 'foo';
         // return <BlockchainContext.Provider value={}>
         //   Enabled
         // </BlockchainContext.Provider>
       } else {
-        return <LoginContainer availableProvider={this.state.availableProvider} onEnabled={this.checkConnected.bind(this)} />;
+        return <LoginContainer onLogin={this.handleLogin.bind(this)} />;
       }
     } else {
       return <CanNotBlockchainComponent />;
