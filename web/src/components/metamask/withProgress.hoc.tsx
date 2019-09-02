@@ -27,7 +27,7 @@ export interface WithProgressProps {
   stopProgress: (reason?: string) => void;
 }
 
-export function withProgress<A>(WrappedComponent: React.ComponentType<A & WithProgressProps>, startProgress?: boolean) {
+export function withProgress<A>(WrappedComponent: React.ComponentType<A & WithProgressProps>, startProgress?: boolean): React.ComponentClass<A> {
   return class extends React.Component<A, Progress> {
     constructor(props: A) {
       super(props)
