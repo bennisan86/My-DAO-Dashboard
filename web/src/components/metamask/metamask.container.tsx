@@ -1,6 +1,6 @@
 import React from 'react'
 import CanNotBlockchainView from './can-not-blockchain.view';
-import { LoginContainer } from './login.container';
+import { EnableMetamaskContainer } from './enable-metamask.container';
 
 export function availableProvider() {
   const w = window as any;
@@ -11,7 +11,7 @@ export class MetamaskContainer extends React.Component {
   render () {
     const provider = availableProvider()
     if (provider) {
-      return <LoginContainer availableProvider={provider}>{this.props.children}</LoginContainer>
+      return <EnableMetamaskContainer availableProvider={provider}>{this.props.children}</EnableMetamaskContainer>
     } else {
       return <CanNotBlockchainView/>
     }
