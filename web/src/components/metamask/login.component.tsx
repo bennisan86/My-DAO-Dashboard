@@ -1,6 +1,6 @@
-import { ProgressKind, useProgress } from './use-progress.hoc';
 import { LoginView } from './login.view';
 import React from 'react';
+import { ProgressKind, useProgress } from '../../hooks/use-progress';
 
 interface Props {
   enable: () => Promise<void>;

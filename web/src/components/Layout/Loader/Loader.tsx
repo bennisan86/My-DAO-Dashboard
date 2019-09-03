@@ -1,14 +1,25 @@
-import React, { Component } from "react";
-import "./loader.css";
+import React  from 'react';
+import './loader.css';
 
-class Loader extends Component {
-  public render() {
-    return (
-      <div className="loader-center">
-        <div className="donut-loader" />
-      </div>
-    );
-  }
+interface Props {
+  message?: string;
 }
+
+export const Loader: React.FC<Props> = props => {
+  const renderMessage = () => {
+    if (props.message) {
+      return <p>{props.message}</p>;
+    } else {
+      return undefined;
+    }
+  };
+
+  return (
+    <div className="loader-center">
+      {renderMessage()}
+      <div className="donut-loader" />
+    </div>
+  );
+};
 
 export default Loader;

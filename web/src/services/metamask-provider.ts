@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 
 export class MetamaskProvider {
-  private readonly upstream: any;
+  readonly upstream: any;
   account: string;
 
   constructor() {
@@ -14,11 +14,7 @@ export class MetamaskProvider {
     return Boolean(this.upstream);
   }
 
-  isEnabled(): boolean {
-    return this.upstream && this.upstream.enable ? this.upstream.selectedAddress : !!this.upstream;
-  }
-
-  async enable(): Promise<string> {
+  async enable(): Promise<void> {
     if (this.upstream && this.upstream.enable) {
       const accounts = await this.upstream.enable();
       this.account = accounts[0];
@@ -27,6 +23,5 @@ export class MetamaskProvider {
       const signer = await provider.getSigner(0);
       this.account = await signer.getAddress();
     }
-    return this.account;
   }
 }

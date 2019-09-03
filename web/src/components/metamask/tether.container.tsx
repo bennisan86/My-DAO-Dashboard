@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { LoginComponent } from './login.component';
 import { MetamaskProvider } from '../../services/metamask-provider';
-import { ITetherContext, TetherContext } from '../../contexts/tether.context';
+import { TetherContext } from '../../contexts/tether.context';
 
 interface Props {
   provider: MetamaskProvider;
 }
 
 export const TetherContainer: React.FunctionComponent<Props> = props => {
-  const [tetherState, setTetherState] = useState<ITetherContext>({
+  const [tetherState, setTetherState] = useState({
     account: props.provider.account,
+    provider: props.provider.upstream,
   });
 
   const enable = async () => {
-    const account = await props.provider.enable();
+    await props.provider.enable();
     setTetherState({
-      account,
+      account: props.provider.account,
+      provider: props.provider.upstream,
     });
   };
 
