@@ -5,7 +5,7 @@ import './assets/styles/app.css';
 import DaoListLoader from './components/DaoListComponent/DaoListLoader';
 import { AppHeader } from './components/Layout/AppHeader';
 import ProposalLoader from './components/ProposalLoader';
-import Settings from './components/Settings/Settings';
+import Settings from './components/Settings0/Settings';
 import DAO from './pages/DAO';
 import Dashboard from './pages/Dashboard';
 import { MainContainer } from './components/main.container';
