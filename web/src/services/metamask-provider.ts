@@ -1,22 +1,32 @@
+import { ethers } from 'ethers';
+
 export class MetamaskProvider {
   private readonly upstream: any;
+  account: string;
 
-  constructor () {
+  constructor() {
     const w = window as any;
     this.upstream = w.ethereum || (w.web3 && w.web3.currentProvider);
+    this.account = this.upstream.selectedAddress;
   }
 
-  isAvailable (): boolean {
+  isAvailable(): boolean {
     return Boolean(this.upstream);
   }
 
-  isEnabled (): boolean {
+  isEnabled(): boolean {
     return this.upstream && this.upstream.enable ? this.upstream.selectedAddress : !!this.upstream;
   }
 
-  async enable (): Promise<void> {
+  async enable(): Promise<string> {
     if (this.upstream && this.upstream.enable) {
-      await this.upstream.enable();
+      const accounts = await this.upstream.enable();
+      this.account = accounts[0];
+    } else {
+      const provider = new ethers.providers.Web3Provider(this.upstream);
+      const signer = await provider.getSigner(0);
+      this.account = await signer.getAddress();
     }
+    return this.account;
   }
 }

@@ -1,4 +1,4 @@
-import { ProgressKind, useProgress } from './use-progress';
+import { ProgressKind, useProgress } from './use-progress.hoc';
 import { LoginView } from './login.view';
 import React from 'react';
 
