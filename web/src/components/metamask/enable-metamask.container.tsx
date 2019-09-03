@@ -1,14 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { LoginComponent } from './login.component';
-import { MetamaskContext } from '../../contexts/metamask.context';
+import { MetamaskProvider } from '../../services/metamask-provider';
 
-export const EnableMetamaskContainer: React.FunctionComponent = props => {
-  const provider = useContext(MetamaskContext);
-  const [enabled, setEnabled] = useState(provider.isEnabled());
+interface Props {
+  provider: MetamaskProvider
+}
+
+export const EnableMetamaskContainer: React.FunctionComponent<Props> = props => {
+  const [enabled, setEnabled] = useState(props.provider.isEnabled());
+
+  const enable = async () => {
+    await props.provider.enable()
+    setEnabled(props.provider.isEnabled())
+  };
 
   if (enabled) {
     return <>props.children</>;
   } else {
-    return <LoginComponent setEnabled={setEnabled} />;
+    return <LoginComponent enable={enable} />;
   }
 };

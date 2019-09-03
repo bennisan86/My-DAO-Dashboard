@@ -1,21 +1,18 @@
 import { ProgressKind, useProgress } from './use-progress';
 import { LoginView } from './login.view';
-import React, { useContext } from 'react';
-import { MetamaskContext } from '../../contexts/metamask.context';
+import React from 'react';
 
 interface Props {
-  setEnabled: (enabled: boolean) => void;
+  enable: () => Promise<void>;
 }
 
 export const LoginComponent: React.FC<Props> = props => {
-  const provider = useContext(MetamaskContext);
   const progress = useProgress(false);
 
   const onLogin = async () => {
     progress.start();
     try {
-      await provider.enable();
-      props.setEnabled(true);
+      await props.enable();
     } catch (e) {
       progress.stop(e);
     }
