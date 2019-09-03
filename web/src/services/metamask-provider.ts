@@ -7,7 +7,7 @@ export class MetamaskProvider {
   constructor() {
     const w = window as any;
     this.upstream = w.ethereum || (w.web3 && w.web3.currentProvider);
-    this.account = this.upstream.selectedAddress;
+    this.account = this.upstream ? this.upstream.selectedAddress : '';
   }
 
   isAvailable(): boolean {
