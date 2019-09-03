@@ -53,6 +53,10 @@ export class ProgressTracker {
   isRunning() {
     return this.current.kind === ProgressKind.RUNNING;
   }
+
+  isError() {
+    return this.current.kind === ProgressKind.FAILED ? this.current.error : undefined
+  }
 }
 
 export function useProgress(initialProgress?: boolean) {

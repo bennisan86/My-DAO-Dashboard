@@ -7,13 +7,13 @@ import { BoxService } from '../../services/box.service';
 
 export const BoxContainer: React.FC = props => {
   const tether = useContext(TetherContext);
-  const box = new BoxService(tether.account, tether.provider);
+  const boxService = new BoxService(tether.account, tether.provider);
   const progress = useProgress(true);
   const [watched, setWatched] = useState<string[] | undefined>(undefined);
 
   useEffect(() => {
     if (!watched) {
-      box
+      boxService
         .watchedAddresses()
         .then(addresses => {
           setWatched(addresses);
@@ -25,7 +25,15 @@ export const BoxContainer: React.FC = props => {
   });
 
   if (watched) {
-    return <BoxContext.Provider value={{watchedAddresses: watched}}>{props.children}</BoxContext.Provider>
+    const box = {
+      watchedAddresses: watched,
+      updateWatchedAddresses: async (addresses: string[]) => {
+        await boxService.updateWatchedAddresses(addresses);
+        setWatched(addresses);
+      },
+    };
+
+    return <BoxContext.Provider value={box}>{props.children}</BoxContext.Provider>;
   } else {
     return <Loader message={'Opening 3Box profile...'} />;
   }

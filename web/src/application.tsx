@@ -5,7 +5,7 @@ import './assets/styles/app.css';
 import DaoListLoader from './components/DaoListComponent/DaoListLoader';
 import { AppHeader } from './components/Layout/AppHeader';
 import ProposalLoader from './components/ProposalLoader';
-import Settings from './components/Settings0/Settings';
+import { SettingsComponent } from './components/settings/settings.component';
 import DAO from './pages/DAO';
 import Dashboard from './pages/Dashboard';
 import { MainContainer } from './components/main.container';
@@ -21,15 +21,14 @@ const Application: React.FC = () => {
         </Header>
         <Content className="container">
           <div className="content">
-            <Route exact path="/settings" component={Settings} />
-            <DaoListLoader>
-              <ProposalLoader>
-                <Route exact path="/" component={Dashboard} />
-                <Route exact path="/dao/:address" component={DAO} />
-                <Route exact path="/settings" component={Settings} />
-                <Redirect to="/" />
-              </ProposalLoader>
-            </DaoListLoader>
+            <Route exact path="/settings" component={SettingsComponent} />
+            {/*<DaoListLoader>*/}
+            {/*  <ProposalLoader>*/}
+            {/*    <Route exact path="/" component={Dashboard} />*/}
+            {/*    <Route exact path="/dao/:address" component={DAO} />*/}
+            {/*    <Redirect to="/" />*/}
+            {/*  </ProposalLoader>*/}
+            {/*</DaoListLoader>*/}
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
