@@ -3,7 +3,7 @@ import { TetherContainer } from './tether.container';
 import { CanNotBlockchainView } from './can-not-blockchain.view';
 import { MetamaskProvider } from '../../services/metamask-provider';
 
-export const MetamaskContainer: React.FC = props => {
+export const MetamaskLoader: React.FC = props => {
   const provider = new MetamaskProvider()
   if (provider.isAvailable()) {
     return <TetherContainer provider={provider}>{props.children}</TetherContainer>;

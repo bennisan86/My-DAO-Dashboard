@@ -5,7 +5,7 @@ import { useProgress } from '../../hooks/use-progress';
 import { BoxContext } from '../../contexts/box.context';
 import { BoxService } from '../../services/box.service';
 
-export const BoxContainer: React.FC = props => {
+export const BoxLoader: React.FC = props => {
   const tether = useContext(TetherContext);
   const boxService = new BoxService(tether.account, tether.provider);
   const progress = useProgress(true);
