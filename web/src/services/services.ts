@@ -5,6 +5,8 @@ import { SettingsService } from "./settings/settings.service";
 import { DaosService } from "./daos/daos.service";
 import { map } from "rxjs/operators";
 import { ProposalsService } from "./proposals/proposals.service";
+import { BalanceService } from "./balance.service";
+import { Observable } from "rxjs";
 
 export class Services {
   @memoize()
@@ -19,12 +21,7 @@ export class Services {
 
   @memoize()
   get settings() {
-    const service = new SettingsService();
-    this.blockchain.ready$.subscribe(async payload => {
-      await service.openSpace(payload.web3, payload.address);
-      service.readWatchedAddresses();
-    });
-    return service;
+    return new SettingsService(this.blockchain.ready$);
   }
 
   @memoize()

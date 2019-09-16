@@ -10,15 +10,17 @@ export const AddressesFormComponent: React.FC = props => {
   const [addressesToStore, setAddressesToStore] = useState<string[]>([]);
   const savingProgress = useProgress(false);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    try {
-      savingProgress.start();
-      await settings.writeWatchedAddresses(addressesToStore);
-      savingProgress.stop();
-    } catch (e) {
-      savingProgress.stop(e);
-    }
+    savingProgress.start();
+    settings.writeWatchedAddresses(addressesToStore).subscribe({
+      next: () => {
+        savingProgress.stop()
+      },
+      error: err => {
+        savingProgress.stop(err)
+      }
+    });
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

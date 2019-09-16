@@ -1,13 +1,18 @@
 import { SettingsStore } from "./settings.store";
 import { SettingsQuery } from "./settings.query";
-import Web3 from "web3";
 import { BehaviorSubject, Observable } from "rxjs";
-import { filter, first } from "rxjs/operators";
+import { mergeMap, tap } from "rxjs/operators";
+import { BlockchainReady } from "../../model/blockchain-ready";
 
 const ThreeBox = require("3box");
 
 const NAMESPACE = "my-dao-dashboard";
 const ADDRESS_KEY = "watched-addresses";
+
+export async function openSpace(ready: BlockchainReady): Promise<any> {
+  const box = await ThreeBox.openBox(ready.address, ready.web3.currentProvider);
+  return box.openSpace(NAMESPACE);
+}
 
 export class SettingsService {
   private readonly store: SettingsStore;
@@ -15,33 +20,15 @@ export class SettingsService {
   private readonly space$Subject: BehaviorSubject<any>;
   private readonly space$: Observable<any>;
 
-  constructor() {
+  constructor(blockchainReady$: Observable<BlockchainReady>) {
     this.store = new SettingsStore({
       watchedAddresses: [],
       isLoaded: false
     });
     this.query = new SettingsQuery(this.store);
     this.space$Subject = new BehaviorSubject(undefined);
-    this.space$ = this.space$Subject.pipe(filter(s => !!s));
-  }
-
-  async openSpace(web3: Web3, address: string) {
-    const box = await ThreeBox.openBox(address, web3.currentProvider);
-    const space = await box.openSpace(NAMESPACE);
-    this.space$Subject.next(space);
-  }
-
-  async writeWatchedAddresses(addresses: string[]) {
-    const space = await this.space$.pipe(first()).toPromise();
-    const toWrite = addresses.map(a => a.toLowerCase());
-    await space.private.set(ADDRESS_KEY, toWrite);
-    this.store.update({
-      watchedAddresses: toWrite
-    });
-  }
-
-  readWatchedAddresses() {
-    this.space$.pipe(first()).subscribe(async space => {
+    this.space$ = blockchainReady$.pipe(mergeMap(openSpace));
+    this.space$.subscribe(async space => {
       const boxedAddresses = await space.private.get(ADDRESS_KEY);
       const watchedAddresses = boxedAddresses || [];
       this.store.update({
@@ -49,5 +36,17 @@ export class SettingsService {
         isLoaded: true
       });
     });
+  }
+
+  writeWatchedAddresses(addresses: string[]) {
+    return this.space$.pipe(
+      tap(async space => {
+        const toWrite = addresses.map(a => a.toLowerCase());
+        await space.private.set(ADDRESS_KEY, toWrite);
+        this.store.update({
+          watchedAddresses: toWrite
+        });
+      })
+    );
   }
 }
