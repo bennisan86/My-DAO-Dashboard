@@ -8,10 +8,10 @@ import { map } from "rxjs/operators";
 export const DashboardLoader: React.FC = props => {
   const daosContext = useContext(DaosContext);
   const settingsContext = useContext(SettingsContext);
-  const [isLoading, setIsLoading] = useState(daosContext.query.isLoading || settingsContext.query.isLoading);
+  const [isLoading, setIsLoading] = useState(daosContext.query.isLoading || !settingsContext.query.isLoaded);
 
   useEffect(() => {
-    const isLoading$ = zip(daosContext.query.isLoading$, settingsContext.query.isLoading$).pipe(map(t => t[0] && t[1]));
+    const isLoading$ = zip(daosContext.query.isLoading$, settingsContext.query.isLoaded$).pipe(map(t => t[0] && !t[1]));
     const subscription = isLoading$.subscribe(isLoading => {
       setIsLoading(isLoading);
     });
@@ -19,7 +19,7 @@ export const DashboardLoader: React.FC = props => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [daosContext.query.isLoading$, settingsContext.query.isLoading$]);
+  }, [daosContext.query.isLoading$, settingsContext.query.isLoaded$]);
 
   if (isLoading) {
     return <LoaderView message={"Loading DAOs..."} />;

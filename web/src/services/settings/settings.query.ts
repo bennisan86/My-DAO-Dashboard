@@ -1,23 +1,21 @@
 import { Query } from "@datorama/akita";
 import { SettingsState, SettingsStore } from "./settings.store";
 import { filter, map } from "rxjs/operators";
-import { Observable, zip } from "rxjs";
+import { Observable } from "rxjs";
 
 export class SettingsQuery extends Query<SettingsState> {
-  isLoading: boolean = true;
-
-  isLoading$ = this.selectLoading();
-  watchedAddresses$: Observable<string[]> = this.select(s => s.watchedAddresses).pipe(map(w => w || []));
-  loadedWatchedAddresses$: Observable<string[]> = zip(this.isLoading$, this.watchedAddresses$).pipe(
-    filter(p => !p[0]),
-    map(p => p[1])
+  isLoaded$ = this.select(s => s.isLoaded);
+  watchedAddresses$: Observable<string[]> = this.select().pipe(
+    filter(s => s.isLoaded),
+    map(s => s.watchedAddresses || [])
   );
 
   constructor(readonly store: SettingsStore) {
     super(store);
-    this.selectLoading().subscribe(isLoading => {
-      this.isLoading = isLoading;
-    });
+  }
+
+  get isLoaded(): boolean {
+    return this.getValue().isLoaded;
   }
 
   get watchedAddresses(): string[] {

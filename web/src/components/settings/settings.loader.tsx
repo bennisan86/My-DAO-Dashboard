@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../../contexts/settings.context";
 import LoaderView from "../layout/loader/loader.view";
 
-export const SettingsLoader: React.FC = (props) => {
+export const SettingsLoader: React.FC = props => {
   const settings = useContext(SettingsContext);
-  const [isLoaded, setLoaded] = useState<boolean>(settings.query.isLoading);
+  const [isLoaded, setLoaded] = useState<boolean>(settings.query.isLoaded);
 
   useEffect(() => {
-    const subscription = settings.query.selectLoading().subscribe(isLoading => {
-      setLoaded(!isLoading);
+    const subscription = settings.query.isLoaded$.subscribe(isLoaded => {
+      setLoaded(isLoaded);
     });
     return () => {
       subscription.unsubscribe();

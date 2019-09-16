@@ -29,7 +29,7 @@ export class Services {
 
   @memoize()
   get daos() {
-    const watchedAddresses$ = this.settings.query.loadedWatchedAddresses$;
+    const watchedAddresses$ = this.settings.query.watchedAddresses$;
     const web3$ = this.blockchain.ready$.pipe(map(p => p.web3));
     const account$ = this.blockchain.ready$.pipe(map(p => p.address));
     return new DaosService(watchedAddresses$, web3$, account$);

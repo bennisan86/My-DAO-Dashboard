@@ -17,9 +17,9 @@ export class SettingsService {
 
   constructor() {
     this.store = new SettingsStore({
-      watchedAddresses: []
+      watchedAddresses: [],
+      isLoaded: false
     });
-    this.store.setLoading(true);
     this.query = new SettingsQuery(this.store);
     this.space$Subject = new BehaviorSubject(undefined);
     this.space$ = this.space$Subject.pipe(filter(s => !!s));
@@ -45,9 +45,9 @@ export class SettingsService {
       const boxedAddresses = await space.private.get(ADDRESS_KEY);
       const watchedAddresses = boxedAddresses || [];
       this.store.update({
-        watchedAddresses
+        watchedAddresses,
+        isLoaded: true
       });
-      this.store.setLoading(false);
     });
   }
 }
