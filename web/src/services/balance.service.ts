@@ -24,9 +24,13 @@ export class BalanceService {
 
   public async assetPrice(symbol: string): Promise<number> {
     const endpoint = `https://data.messari.io/api/v1/assets/${symbol}/metrics`;
-    const response = await fetch(endpoint);
-    const payload = await response.json();
-    return payload.data.market_data.price_usd;
+    try {
+      const response = await fetch(endpoint);
+      const payload = await response.json();
+      return payload.data.market_data.price_usd;
+    } catch (e) {
+      return 0
+    }
   }
 
   public async balance(address: string): Promise<BalanceEntry[]> {
@@ -38,7 +42,8 @@ export class BalanceService {
     const daiBalanceUsd = daiBalance.dividedBy(10 ** 18).multipliedBy(await this.assetPrice("DAI"));
     const genBalance = new BigNumber(await this.genContract.methods.balanceOf(address).call());
     const genBalanceUsd = genBalance.dividedBy(10 ** 18).multipliedBy(await this.assetPrice("GEN"));
-    const tacoBalance = await this.tacoContract.methods.balanceOf(address).call();
+    const tacoBalance = new BigNumber(await this.tacoContract.methods.balanceOf(address).call());
+    const tacoBalanceUsd = tacoBalance.dividedBy(10 ** 18).multipliedBy(await this.assetPrice("TACO"));
     return [
       {
         symbol: "ETH",
@@ -72,8 +77,8 @@ export class BalanceService {
         symbol: "TACO",
         name: "MetaCartel Tacos",
         contractAddress: TACO_ADDRESS,
-        value: new BigNumber(tacoBalance),
-        usdValue: 0
+        value: tacoBalance,
+        usdValue: tacoBalanceUsd.toNumber()
       }
     ];
   }
