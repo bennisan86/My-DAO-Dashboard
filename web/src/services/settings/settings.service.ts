@@ -3,13 +3,12 @@ import { SettingsQuery } from "./settings.query";
 import { BehaviorSubject, Observable } from "rxjs";
 import { mergeMap, tap } from "rxjs/operators";
 import { BlockchainReady } from "../../model/blockchain-ready";
-
-const ThreeBox = require("3box");
+import ThreeBox, { Space } from "3box";
 
 const NAMESPACE = "my-dao-dashboard";
 const ADDRESS_KEY = "watched-addresses";
 
-export async function openSpace(ready: BlockchainReady): Promise<any> {
+export async function openSpace(ready: BlockchainReady): Promise<Space> {
   const box = await ThreeBox.openBox(ready.address, ready.web3.currentProvider);
   return box.openSpace(NAMESPACE);
 }
@@ -18,7 +17,7 @@ export class SettingsService {
   private readonly store: SettingsStore;
   readonly query: SettingsQuery;
   private readonly space$Subject: BehaviorSubject<any>;
-  private readonly space$: Observable<any>;
+  private readonly space$: Observable<Space>;
 
   constructor(blockchainReady$: Observable<BlockchainReady>) {
     this.store = new SettingsStore({
@@ -29,7 +28,7 @@ export class SettingsService {
     this.space$Subject = new BehaviorSubject(undefined);
     this.space$ = blockchainReady$.pipe(mergeMap(openSpace));
     this.space$.subscribe(async space => {
-      const boxedAddresses = await space.private.get(ADDRESS_KEY);
+      const boxedAddresses = await space.private.get<string[]>(ADDRESS_KEY);
       const watchedAddresses = boxedAddresses || [];
       this.store.update({
         watchedAddresses,
